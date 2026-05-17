@@ -4,7 +4,8 @@ import requests, os, json, re
 from datetime import datetime, timedelta
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["https://naj401042-maker.github.io", "http://localhost", "null"], 
+     allow_headers=["Content-Type"], methods=["GET", "POST", "OPTIONS"])
 
 SAHMK_KEY  = os.environ.get("SAHMK_API_KEY", "")
 SAHMK_BASE = "https://app.sahmk.sa/api/v1"

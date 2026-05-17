@@ -2,10 +2,12 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import requests, os, json, re
 from datetime import datetime, timedelta
-
-app = Flask(__name__)
-CORS(app, origins=["https://naj401042-maker.github.io", "http://localhost", "null"], 
-     allow_headers=["Content-Type"], methods=["GET", "POST", "OPTIONS"])
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 SAHMK_KEY  = os.environ.get("SAHMK_API_KEY", "")
 SAHMK_BASE = "https://app.sahmk.sa/api/v1"

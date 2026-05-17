@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>شاشة المضاربة</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#04080f;--sur:#0a1422;--card:#0e1b2d;--bdr:#1a3050;--gold:#e8a020;--g2:#ffcc55;--grn:#00e87a;--red:#ff3355;--blu:#00aaff;--txt:#ddeeff;--mut:#4a7090;--dim:#162840;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+header{background:rgba(10,20,34,.98);border-bottom:2px solid var(--gold);padding:0 14px;height:50px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:300;}
+.logo{font-size:15px;font-weight:900;color:var(--g2);}
+.hbs{display:flex;gap:5px;}
+.hb{padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;}
+.hb.g{background:rgba(0,232,122,.1);border:1px solid rgba(0,232,122,.3);color:var(--grn);}
+.hb.b{background:rgba(0,170,255,.1);border:1px solid rgba(0,170,255,.3);color:var(--blu);}
+.cbar{background:var(--card);border-bottom:1px solid var(--bdr);padding:8px 14px;display:flex;gap:7px;align-items:flex-end;flex-wrap:wrap;}
+.cg{display:flex;flex-direction:column;gap:2px;}
+.cl{font-size:9px;color:var(--mut);font-weight:700;text-transform:uppercase;}
+select{background:var(--sur);border:1px solid var(--bdr);border-radius:7px;color:var(--txt);font-family:'Tajawal',sans-serif;font-size:12px;padding:5px 9px;}
+select:focus{outline:none;border-color:var(--gold);}
+.sbtn{background:linear-gradient(135deg,var(--gold),#9a5e10);color:#000;border:none;border-radius:8px;padding:8px 20px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:900;cursor:pointer;margin-right:auto;}
+.sbtn:disabled{opacity:.4;cursor:not-allowed;}
+.sbar{background:var(--sur);border-bottom:1px solid var(--bdr);padding:5px 14px;display:none;gap:10px;flex-wrap:wrap;align-items:center;}
+.sbar.on{display:flex;}
+.si{display:flex;align-items:center;gap:3px;font-size:10px;}
+.sd{width:6px;height:6px;border-radius:50%;}
+.ftabs{background:var(--sur);border-bottom:1px solid var(--bdr);padding:6px 14px;display:flex;gap:4px;overflow-x:auto;}
+.ft{padding:3px 10px;border-radius:12px;font-size:10px;font-weight:600;cursor:pointer;white-space:nowrap;border:1px solid var(--bdr);color:var(--mut);background:transparent;font-family:'Tajawal',sans-serif;}
+.ft.on{background:rgba(232,160,32,.1);border-color:rgba(232,160,32,.4);color:var(--g2);}
+.pgw{padding:10px 14px;display:none;}
+.pgh{display:flex;justify-content:space-between;font-size:10px;color:var(--mut);margin-bottom:5px;}
+.pgt2{background:var(--sur);border-radius:4px;height:4px;overflow:hidden;}
+.pgf{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gold),var(--grn));transition:width .3s;width:0%;}
+.pgs{display:flex;gap:4px;flex-wrap:wrap;margin-top:7px;}
+.ps{font-size:9px;padding:2px 7px;border-radius:9px;background:var(--sur);border:1px solid var(--bdr);color:var(--mut);display:flex;align-items:center;gap:3px;}
+.ps.a{background:rgba(232,160,32,.07);border-color:rgba(232,160,32,.3);color:var(--g2);}
+.ps.d{background:rgba(0,232,122,.07);border-color:rgba(0,232,122,.25);color:var(--grn);}
+.lay{display:flex;height:calc(100vh - 175px);}
+.tp{flex:1;overflow:hidden;display:flex;flex-direction:column;}
+.tph{padding:7px 13px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;background:var(--card);flex-shrink:0;}
+.tpt{font-size:11px;font-weight:700;color:var(--g2);display:flex;align-items:center;gap:5px;}
+.cb{background:rgba(232,160,32,.1);color:var(--g2);border:1px solid rgba(232,160,32,.25);border-radius:8px;padding:1px 7px;font-size:9px;}
+.tsc{flex:1;overflow-y:auto;overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:11px;}
+thead{background:var(--sur);position:sticky;top:0;z-index:10;}
+th{padding:6px 9px;text-align:right;color:var(--mut);font-weight:700;font-size:9px;text-transform:uppercase;border-bottom:1px solid var(--bdr);white-space:nowrap;}
+tbody tr{border-bottom:1px solid rgba(26,48,80,.3);cursor:pointer;transition:background .1s;}
+tbody tr:hover{background:rgba(232,160,32,.03);}
+tbody tr.sl{background:rgba(232,160,32,.07);border-right:3px solid var(--gold);}
+td{padding:7px 9px;white-space:nowrap;}
+.sym{font-weight:900;font-size:12px;color:var(--g2);}
+.snm{font-size:9px;color:var(--mut);margin-top:1px;}
+.up{color:var(--grn);}.dn{color:var(--red);}
+.rp{padding:2px 6px;border-radius:6px;font-size:10px;font-weight:700;direction:ltr;display:inline-block;}
+.rh{background:rgba(255,51,85,.14);color:var(--red);}
+.rc{background:rgba(0,232,122,.14);color:var(--grn);}
+.rm{background:rgba(255,170,0,.14);color:#ffaa00;}
+.sw{display:flex;align-items:center;gap:4px;}
+.st{flex:1;background:var(--dim);border-radius:3px;height:3px;min-width:40px;}
+.sf{height:100%;border-radius:3px;}
+.sn2{font-size:10px;font-weight:800;min-width:18px;direction:ltr;}
+.stg{padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;}
+.sb2{background:rgba(0,232,122,.1);color:var(--grn);border:1px solid rgba(0,232,122,.2);}
+.ss2{background:rgba(255,51,85,.1);color:var(--red);border:1px solid rgba(255,51,85,.2);}
+.sw3{background:rgba(255,170,0,.1);color:#ffaa00;border:1px solid rgba(255,170,0,.2);}
+.sn4{background:rgba(74,112,144,.1);color:var(--mut);border:1px solid var(--bdr);}
+.sp{width:330px;border-right:1px solid var(--bdr);background:var(--card);display:none;flex-direction:column;overflow:hidden;}
+.sp.on{display:flex;}
+.sph{padding:10px 13px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.sps{font-size:16px;font-weight:900;color:var(--g2);}
+.spn2{font-size:9px;color:var(--mut);margin-top:1px;}
+.cx{background:var(--sur);border:1px solid var(--bdr);color:var(--mut);border-radius:5px;padding:2px 8px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:10px;}
+.spsc{flex:1;overflow-y:auto;}
+.spp{padding:10px 13px;border-bottom:1px solid var(--bdr);}
+.spb{font-size:26px;font-weight:900;}
+.spc{font-size:12px;font-weight:700;margin-top:2px;}
+.spch2{padding:10px 13px;border-bottom:1px solid var(--bdr);}
+.spcl{font-size:9px;color:var(--mut);font-weight:700;text-transform:uppercase;margin-bottom:7px;}
+.tvb{display:flex;align-items:center;justify-content:center;gap:6px;background:linear-gradient(135deg,#1a3a6e,#0e2244);border:1px solid #2962ff;border-radius:8px;color:#fff;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;padding:9px;text-decoration:none;width:100%;margin-bottom:5px;}
+.tvb2{display:flex;align-items:center;justify-content:center;background:var(--sur);border:1px solid var(--bdr);border-radius:8px;color:var(--mut);font-family:'Tajawal',sans-serif;font-size:10px;padding:6px;text-decoration:none;width:100%;}
+.spm{padding:10px 13px;border-bottom:1px solid var(--bdr);display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.mb{background:var(--sur);border-radius:7px;padding:8px;}
+.ml{font-size:9px;color:var(--mut);font-weight:700;text-transform:uppercase;}
+.mv{font-size:14px;font-weight:800;direction:ltr;margin-top:2px;}
+.mbar{background:var(--dim);border-radius:2px;height:3px;margin-top:4px;}
+.mbf{height:100%;border-radius:2px;transition:width .8s;}
+.spnw{padding:10px 13px;border-bottom:1px solid var(--bdr);}
+.snl{font-size:9px;color:var(--g2);font-weight:700;text-transform:uppercase;margin-bottom:7px;}
+.ni{padding:8px;border-radius:6px;background:var(--sur);border:1px solid var(--bdr);margin-bottom:5px;}
+.nh{font-size:10px;line-height:1.6;color:var(--txt);}
+.nm{font-size:9px;color:var(--mut);margin-top:3px;display:flex;gap:5px;align-items:center;}
+.ns{padding:1px 5px;border-radius:6px;font-size:9px;font-weight:700;}
+.nsp{background:rgba(0,232,122,.12);color:var(--grn);}
+.nsn{background:rgba(255,51,85,.12);color:var(--red);}
+.nsu{background:rgba(74,112,144,.12);color:var(--mut);}
+.spai{padding:10px 13px;}
+.al{font-size:9px;color:var(--blu);font-weight:700;text-transform:uppercase;margin-bottom:7px;}
+.at{font-size:10px;line-height:1.9;color:#90b8cc;}
+.spin{display:inline-block;width:10px;height:10px;border:2px solid rgba(232,160,32,.2);border-top-color:var(--gold);border-radius:50%;animation:rot .7s linear infinite;vertical-align:middle;}
+@keyframes rot{to{transform:rotate(360deg)}}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;color:var(--mut);gap:9px;text-align:center;}
+.ei{font-size:40px;}.et{font-size:14px;font-weight:700;color:var(--txt);}.ed{font-size:11px;line-height:1.8;max-width:260px;}
+.disc{background:rgba(232,160,32,.04);border-top:1px solid rgba(232,160,32,.1);padding:5px 14px;font-size:9px;color:rgba(232,160,32,.5);text-align:center;flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🇸🇦🇺🇸 شاشة المضاربة الشاملة</div>
+  <div class="hbs">
+    <div class="hb g">📡 أسعار حقيقية</div>
+    <div class="hb b">🤖 Claude AI</div>
+  </div>
+</header>
+
+<div class="cbar">
+  <div class="cg">
+    <div class="cl">السوق</div>
+    <select id="mkt" onchange="chgMkt()">
+      <option value="SA">🇸🇦 تاسي السعودي</option>
+      <option value="US">🇺🇸 أمريكا — أقل من $20</option>
+      <option value="US_MEME">🔥 ميم ومضاربة</option>
+      <option value="US_CRYPTO">₿ كريبتو</option>
+      <option value="US_ALL">🇺🇸 أمريكا — الكل</option>
+    </select>
+  </div>
+  <div class="cg" id="sc">
+    <div class="cl">القطاع</div>
+    <select id="sec">
+      <option value="ALL">جميع القطاعات</option>
+      <option value="بنوك">🏦 البنوك</option>
+      <option value="طاقة,بتروكيماويات">⚗️ طاقة وبتروكيماويات</option>
+      <option value="أسمنت">🏗️ أسمنت</option>
+      <option value="اتصالات">📱 اتصالات</option>
+      <option value="تجزئة,أغذية">🛒 تجزئة وأغذية</option>
+      <option value="تأمين">🛡️ تأمين</option>
+      <option value="عقارات">🏢 عقارات</option>
+      <option value="صناعة,تعدين">🏭 صناعة وتعدين</option>
+      <option value="نقل,طيران">✈️ نقل وطيران</option>
+    </select>
+  </div>
+  <div class="cg">
+    <div class="cl">الاستراتيجية</div>
+    <select id="strat">
+      <option value="all">أفضل الفرص</option>
+      <option value="momentum">زخم قوي</option>
+      <option value="reversal">انعكاس</option>
+      <option value="volume">حجم ضخم</option>
+    </select>
+  </div>
+  <button class="sbtn" id="btn" onclick="scan()">⚡ فحص</button>
+</div>
+
+<div class="sbar" id="sb">
+  <div class="si"><div class="sd" style="background:var(--grn)"></div>شراء:<strong class="up" id="s1">0</strong></div>
+  <div class="si"><div class="sd" style="background:var(--red)"></div>بيع:<strong class="dn" id="s2">0</strong></div>
+  <div class="si"><div class="sd" style="background:#ffaa00"></div>مراقبة:<strong style="color:#ffaa00" id="s3">0</strong></div>
+  <div class="si"><div class="sd" style="background:var(--grn)"></div>رابح:<strong class="up" id="s5">0</strong></div>
+  <div class="si"><div class="sd" style="background:var(--red)"></div>خاسر:<strong class="dn" id="s6">0</strong></div>
+  <div style="margin-right:auto;font-size:9px;color:var(--mut)" id="st"></div>
+</div>
+
+<div class="ftabs">
+  <button class="ft on" onclick="filt('all',this)">الكل</button>
+  <button class="ft" onclick="filt('buy',this)">✅ شراء</button>
+  <button class="ft" onclick="filt('sell',this)">❌ بيع</button>
+  <button class="ft" onclick="filt('watch',this)">👁 مراقبة</button>
+  <button class="ft" onclick="filt('up',this)">📈 رابح</button>
+  <button class="ft" onclick="filt('dn',this)">📉 خاسر</button>
+  <button class="ft" onclick="filt('vol',this)">🔥 حجم ضخم</button>
+  <button class="ft" onclick="filt('os',this)">💚 تشبع بيعي</button>
+  <button class="ft" onclick="filt('ob',this)">❤️ تشبع شرائي</button>
+  <button class="ft" onclick="filt('np',this)">📰+ إيجابية</button>
+  <button class="ft" onclick="filt('t20',this)">🏆 أفضل 20</button>
+</div>
+
+<div class="pgw" id="pgw">
+  <div class="pgh"><span id="pgt">جاري الفحص...</span><span id="pgp">0%</span></div>
+  <div class="pgt2"><div class="pgf" id="pgf"></div></div>
+  <div class="pgs" id="pgs"></div>
+</div>
+
+<div class="lay">
+  <div class="tp">
+    <div class="tph">
+      <div class="tpt">📊 النتائج <span class="cb" id="cb">—</span></div>
+      <div style="font-size:9px;color:var(--mut)" id="st2"></div>
+    </div>
+    <div class="tsc" id="tbl">
+      <div class="empty">
+        <div class="ei">📊</div>
+        <div class="et">جاهز للفحص</div>
+        <div class="ed">اختر السوق واضغط فحص</div>
+      </div>
+    </div>
+    <div class="disc">⚠️ أسعار حقيقية من سهمك وFinnhub | مؤشرات محاكاة | أخبار Claude AI | ليست توصية</div>
+  </div>
+  <div class="sp" id="spn">
+    <div class="sph">
+      <div><div class="sps" id="spsy">—</div><div class="spn2" id="spnm">—</div></div>
+      <button class="cx" onclick="closeSP()">✕</button>
+    </div>
+    <div class="spsc">
+      <div class="spp"><div class="spb" id="sppr">—</div><div class="spc" id="spch">—</div></div>
+      <div class="spch2">
+        <div class="spcl">📊 الرسم البياني</div>
+        <a id="tv1" href="#" target="_blank" class="tvb">📈 فتح الشارت في TradingView</a>
+        <a id="tv2" href="#" target="_blank" class="tvb2">🕯️ صفحة السهم الكاملة</a>
+      </div>
+      <div class="spm" id="spm"></div>
+      <div class="spnw"><div class="snl">📰 الأخبار</div><div id="spnl"><div style="font-size:10px;color:var(--mut)">اختر سهماً</div></div></div>
+      <div class="spai"><div class="al">🤖 تحليل Claude AI</div><div class="at" id="spai">اختر سهماً</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+var PROXY = "https://web-production-58de5.up.railway.app";
+
+var SA_LIST = [
+  {c:'2222',n:'أرامكو السعودية',s:'طاقة',m:'SA'},
+  {c:'2030',n:'المصافي',s:'طاقة',m:'SA'},
+  {c:'2380',n:'بترو رابغ',s:'طاقة',m:'SA'},
+  {c:'2381',n:'الحفر العربية',s:'طاقة',m:'SA'},
+  {c:'2082',n:'أكوا باور',s:'طاقة',m:'SA'},
+  {c:'2010',n:'سابك',s:'بتروكيماويات',m:'SA'},
+  {c:'2020',n:'سابك للمغذيات',s:'بتروكيماويات',m:'SA'},
+  {c:'2060',n:'التصنيع',s:'بتروكيماويات',m:'SA'},
+  {c:'2090',n:'جبسكو',s:'بتروكيماويات',m:'SA'},
+  {c:'2150',n:'زجاج',s:'بتروكيماويات',m:'SA'},
+  {c:'2200',n:'أنابيب',s:'بتروكيماويات',m:'SA'},
+  {c:'2210',n:'نماء للكيماويات',s:'بتروكيماويات',m:'SA'},
+  {c:'2290',n:'ينساب',s:'بتروكيماويات',m:'SA'},
+  {c:'2310',n:'سبكيم',s:'بتروكيماويات',m:'SA'},
+  {c:'2330',n:'المتقدمة',s:'بتروكيماويات',m:'SA'},
+  {c:'2350',n:'كيان',s:'بتروكيماويات',m:'SA'},
+  {c:'2001',n:'كيمانول',s:'بتروكيماويات',m:'SA'},
+  {c:'3002',n:'أسمنت نجران',s:'أسمنت',m:'SA'},
+  {c:'3003',n:'أسمنت المدينة',s:'أسمنت',m:'SA'},
+  {c:'3010',n:'أسمنت العربية',s:'أسمنت',m:'SA'},
+  {c:'3020',n:'أسمنت اليمامة',s:'أسمنت',m:'SA'},
+  {c:'3030',n:'أسمنت السعودية',s:'أسمنت',m:'SA'},
+  {c:'3040',n:'أسمنت القصيم',s:'أسمنت',m:'SA'},
+  {c:'3050',n:'أسمنت الجنوب',s:'أسمنت',m:'SA'},
+  {c:'3060',n:'أسمنت ينبع',s:'أسمنت',m:'SA'},
+  {c:'3080',n:'أسمنت الشرقية',s:'أسمنت',m:'SA'},
+  {c:'3090',n:'أسمنت تبوك',s:'أسمنت',m:'SA'},
+  {c:'1010',n:'بنك الرياض',s:'بنوك',m:'SA'},
+  {c:'1020',n:'بنك الجزيرة',s:'بنوك',m:'SA'},
+  {c:'1030',n:'بنك الاستثمار',s:'بنوك',m:'SA'},
+  {c:'1040',n:'البنك البلاد',s:'بنوك',m:'SA'},
+  {c:'1060',n:'مصرف الراجحي',s:'بنوك',m:'SA'},
+  {c:'1080',n:'البنك العربي الوطني',s:'بنوك',m:'SA'},
+  {c:'1150',n:'الإنماء',s:'بنوك',m:'SA'},
+  {c:'1180',n:'الأهلي',s:'بنوك',m:'SA'},
+  {c:'7010',n:'اس تي سي',s:'اتصالات',m:'SA'},
+  {c:'7020',n:'إتحاد إتصالات',s:'اتصالات',m:'SA'},
+  {c:'7030',n:'زين السعودية',s:'اتصالات',m:'SA'},
+  {c:'7040',n:'موبايلي',s:'اتصالات',m:'SA'},
+  {c:'8010',n:'التعاونية',s:'تأمين',m:'SA'},
+  {c:'8210',n:'بوبا العربية',s:'تأمين',m:'SA'},
+  {c:'8230',n:'تكافل الراجحي',s:'تأمين',m:'SA'},
+  {c:'4300',n:'دار الأركان',s:'عقارات',m:'SA'},
+  {c:'4250',n:'جبل عمر',s:'عقارات',m:'SA'},
+  {c:'1211',n:'معادن',s:'تعدين',m:'SA'},
+  {c:'1212',n:'أسترا الصناعية',s:'صناعة',m:'SA'},
+  {c:'1301',n:'أسلاك',s:'صناعة',m:'SA'},
+  {c:'4030',n:'البحري',s:'نقل',m:'SA'},
+  {c:'4264',n:'طيران ناس',s:'طيران',m:'SA'},
+  {c:'2280',n:'المراعي',s:'أغذية',m:'SA'},
+  {c:'4190',n:'جرير',s:'تجزئة',m:'SA'},
+  {c:'4164',n:'النهدي',s:'تجزئة',m:'SA'},
+];
+
+var US_LIST = [
+  {c:'AMC',n:'AMC Entertainment',s:'ميم',m:'US'},
+  {c:'GME',n:'GameStop',s:'ميم',m:'US'},
+  {c:'BB',n:'BlackBerry',s:'ميم',m:'US'},
+  {c:'NOK',n:'Nokia',s:'ميم',m:'US'},
+  {c:'TLRY',n:'Tilray Brands',s:'ميم',m:'US'},
+  {c:'SNDL',n:'SUNDIAL Growers',s:'ميم',m:'US'},
+  {c:'SPCE',n:'Virgin Galactic',s:'ميم',m:'US'},
+  {c:'NKLA',n:'Nikola Corp',s:'ميم',m:'US'},
+  {c:'MARA',n:'Marathon Digital',s:'كريبتو',m:'US'},
+  {c:'RIOT',n:'Riot Platforms',s:'كريبتو',m:'US'},
+  {c:'CLSK',n:'CleanSpark',s:'كريبتو',m:'US'},
+  {c:'HIVE',n:'HIVE Digital',s:'كريبتو',m:'US'},
+  {c:'BITF',n:'Bitfarms',s:'كريبتو',m:'US'},
+  {c:'HUT',n:'Hut 8',s:'كريبتو',m:'US'},
+  {c:'LCID',n:'Lucid Group',s:'كهربائية',m:'US'},
+  {c:'RIVN',n:'Rivian',s:'كهربائية',m:'US'},
+  {c:'PLUG',n:'Plug Power',s:'طاقة',m:'US'},
+  {c:'FCEL',n:'FuelCell Energy',s:'طاقة',m:'US'},
+  {c:'SOFI',n:'SoFi Technologies',s:'فينتك',m:'US'},
+  {c:'HOOD',n:'Robinhood',s:'فينتك',m:'US'},
+  {c:'NVAX',n:'Novavax',s:'صحة',m:'US'},
+  {c:'HIMS',n:'Hims & Hers',s:'صحة',m:'US'},
+  {c:'AAPL',n:'Apple',s:'تكنولوجيا',m:'US'},
+  {c:'MSFT',n:'Microsoft',s:'تكنولوجيا',m:'US'},
+  {c:'NVDA',n:'NVIDIA',s:'رقائق',m:'US'},
+  {c:'TSLA',n:'Tesla',s:'كهربائية',m:'US'},
+  {c:'COIN',n:'Coinbase',s:'كريبتو',m:'US'},
+  {c:'MSTR',n:'MicroStrategy',s:'كريبتو',m:'US'},
+  {c:'XOM',n:'ExxonMobil',s:'طاقة',m:'US'},
+  {c:'JPM',n:'JPMorgan',s:'بنوك',m:'US'},
+  {c:'F',n:'Ford Motor',s:'سيارات',m:'US'},
+  {c:'BA',n:'Boeing',s:'طيران',m:'US'},
+];
+
+function getList(){
+  var m=document.getElementById('mkt').value;
+  if(m==='SA'){
+    var sv=document.getElementById('sec').value;
+    if(sv==='ALL') return SA_LIST;
+    var names=sv.split(',');
+    return SA_LIST.filter(function(x){return names.indexOf(x.s)>=0;});
+  }
+  if(m==='US') return US_LIST.filter(function(x){return ['ميم','كريبتو','كهربائية','فينتك','صحة','طاقة'].indexOf(x.s)>=0;});
+  if(m==='US_MEME') return US_LIST.filter(function(x){return x.s==='ميم';});
+  if(m==='US_CRYPTO') return US_LIST.filter(function(x){return x.s==='كريبتو';});
+  return US_LIST;
+}
+
+function chgMkt(){
+  var m=document.getElementById('mkt').value;
+  var sa=m==='SA';
+  document.getElementById('sc').style.display=sa?'':'none';
+}
+
+function R(a,b){return a+Math.random()*(b-a);}
+function fmtV(n){if(!n||n===0)return'—';if(n>=1e9)return(n/1e9).toFixed(1)+'B';if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(0)+'K';return String(n);}
+function slp(ms){return new Promise(function(r){setTimeout(r,ms);});}
+
+function calcInd(cp,strat){
+  var rsi;
+  if(strat==='reversal') rsi=Math.random()>.5?R(16,30):R(70,84);
+  else if(strat==='momentum') rsi=cp>1?R(58,76):cp<-1?R(25,44):R(44,62);
+  else rsi=cp>3?R(65,80):cp>0?R(48,65):cp>-3?R(34,50):R(18,36);
+  var macd=cp>0?R(.05,2):R(-2,-.05);
+  var mh=macd+R(-.4,.4);
+  var stch=rsi>70?R(76,95):rsi<30?R(4,24):R(28,72);
+  var atr=Math.abs(cp)+R(.3,1.2);
+  var vm=strat==='volume'?R(2,4.5):R(.5,2.8);
+  var sc=50;
+  if(rsi<30)sc+=18; else if(rsi>70)sc-=13;
+  if(mh>0&&macd>0)sc+=11; else if(mh<0&&macd<0)sc-=9;
+  if(vm>2)sc+=13; else if(vm>1.5)sc+=7;
+  if(stch<20)sc+=8; else if(stch>80)sc-=6;
+  if(cp>3)sc+=9; else if(cp<-3)sc+=7;
+  sc=Math.max(10,Math.min(97,Math.round(sc)));
+  return{rsi:rsi.toFixed(1),macd:macd.toFixed(3),mh:mh.toFixed(3),
+    stch:stch.toFixed(1),atr:atr.toFixed(1),vm:vm.toFixed(1),
+    sc:sc,sig:sc>=70?'buy':sc<=38?'sell':sc>=56?'watch':'neutral'};
+}
+
+function fetchNews(batch){
+  var sa=batch.length>0&&batch[0].m==='SA';
+  return fetch(PROXY+'/news',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({stocks:batch.map(function(x){return{code:x.c,name:x.n};}),market:sa?'SA':'US'})
+  }).then(function(r){return r.json();}).catch(function(){return{};});
+}
+
+function fetchAI(stk,nd,code){
+  var sa=stk.m==='SA';
+  fetch(PROXY+'/analyze',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      code:stk.c,name:stk.n,sector:stk.s,market:sa?'SA':'US',
+      price:stk.p,change_pct:stk.cp,rsi:stk.rsi,stoch:stk.stch,
+      macd:stk.macd,vol_m:stk.vm,atr:stk.atr,score:stk.sc,
+      news:nd&&nd.news?nd.news:[]
+    })
+  }).then(function(r){return r.json();}).then(function(d){
+    if(selC===code) document.getElementById('spai').textContent=d.analysis||d.error||'تعذر التحليل.';
+  }).catch(function(){if(selC===code) document.getElementById('spai').textContent='تعذر الاتصال.';});
+}
+
+var all=[],nc={},cf='all',selC=null;
+
+function filt(f,el){
+  cf=f;
+  document.querySelectorAll('.ft').forEach(function(t){t.classList.remove('on');});
+  el.classList.add('on');
+  if(all.length) draw(all,f);
+}
+
+function draw(data,f){
+  var list=data.slice();
+  if(f==='buy') list=list.filter(function(d){return d.sig==='buy';});
+  else if(f==='sell') list=list.filter(function(d){return d.sig==='sell';});
+  else if(f==='watch') list=list.filter(function(d){return d.sig==='watch';});
+  else if(f==='up') list=list.filter(function(d){return parseFloat(d.cp)>=0;});
+  else if(f==='dn') list=list.filter(function(d){return parseFloat(d.cp)<0;});
+  else if(f==='vol') list=list.filter(function(d){return parseFloat(d.vm)>=2;});
+  else if(f==='os') list=list.filter(function(d){return parseFloat(d.rsi)<32;});
+  else if(f==='ob') list=list.filter(function(d){return parseFloat(d.rsi)>68;});
+  else if(f==='np') list=list.filter(function(d){return d.nst==='positive';});
+  else if(f==='t20') list=list.slice(0,20);
+
+  document.getElementById('cb').textContent=list.length+' سهم';
+  if(!list.length){
+    document.getElementById('tbl').innerHTML='<div class="empty"><div class="ei">🔍</div><div class="et">لا توجد نتائج</div></div>';
+    return;
+  }
+
+  var rows=list.map(function(d,i){
+    var up=parseFloat(d.cp)>=0;
+    var rn=parseFloat(d.rsi),rc=rn>68?'rh':rn<32?'rc':'rm';
+    var sc=d.sc,scc=sc>=70?'var(--grn)':sc>=55?'#ffaa00':'var(--red)';
+    var sl,sg;
+    if(d.sig==='buy'){sl='✅ شراء';sg='sb2';}
+    else if(d.sig==='sell'){sl='❌ بيع';sg='ss2';}
+    else if(d.sig==='watch'){sl='👁 مراقبة';sg='sw3';}
+    else{sl='⚪ محايد';sg='sn4';}
+    var sa=d.m==='SA',cu=sa?'ر.س':'$',fl=sa?'':'🇺🇸 ';
+    var nn=d.news?d.news.length:0;
+    var nc2=d.nst==='positive'?'var(--grn)':d.nst==='negative'?'var(--red)':'var(--mut)';
+    return '<tr onclick="sel(\''+d.c+'\')" id="r'+d.c+'">'
+      +'<td style="color:var(--mut);font-size:9px;font-weight:700">'+(i+1)+'</td>'
+      +'<td><div class="sym">'+fl+d.c+'</div><div class="snm">'+d.n+' · '+d.s+'</div></td>'
+      +'<td style="font-weight:800;font-size:12px;direction:ltr;color:'+(up?'var(--grn)':'var(--red)')+'">'+d.p+' <span style="font-size:8px;color:var(--mut)">'+cu+'</span></td>'
+      +'<td><span class="'+(up?'up':'dn')+'" style="font-weight:700;font-size:10px">'+(up?'▲':'▼')+Math.abs(d.cp)+'%</span></td>'
+      +'<td><span class="rp '+rc+'">'+d.rsi+'</span></td>'
+      +'<td><div class="sw"><div class="st"><div class="sf" style="width:'+sc+'%;background:'+scc+'"></div></div><div class="sn2" style="color:'+scc+'">'+sc+'</div></div></td>'
+      +'<td><div style="font-size:10px;'+(parseFloat(d.vm)>=2?'color:var(--grn);font-weight:700':'')+'">'+fmtV(d.vol)+(parseFloat(d.vm)>=2?' 🔥':'')+'</div><div style="font-size:8px;color:var(--mut)">'+d.vm+'x</div></td>'
+      +'<td><span style="width:7px;height:7px;border-radius:50%;display:inline-block;background:'+nc2+'"></span> <span style="font-size:9px;color:var(--mut)">'+nn+'</span></td>'
+      +'<td><span class="stg '+sg+'">'+sl+'</span></td>'
+      +'</tr>';
+  }).join('');
+
+  document.getElementById('tbl').innerHTML='<table><thead><tr>'
+    +'<th>#</th><th>السهم</th><th>السعر</th><th>التغيير</th>'
+    +'<th>RSI</th><th>قوة الإشارة</th><th>الحجم</th><th>أخبار</th><th>توصية</th>'
+    +'</tr></thead><tbody>'+rows+'</tbody></table>';
+}
+
+function sel(code){
+  var d=null;
+  for(var i=0;i<all.length;i++){if(all[i].c===code){d=all[i];break;}}
+  if(!d)return;
+  selC=code;
+  document.querySelectorAll('tbody tr').forEach(function(r){r.classList.remove('sl');});
+  var r=document.getElementById('r'+code);if(r)r.classList.add('sl');
+  document.getElementById('spn').classList.add('on');
+  var sa=d.m==='SA',cu=sa?'ر.س':'$';
+  document.getElementById('spsy').textContent=d.c+' — '+d.n;
+  document.getElementById('spnm').textContent=d.s+' · '+(sa?'تداول السعودي 🇸🇦':'NYSE/NASDAQ 🇺🇸');
+  var up=parseFloat(d.cp)>=0;
+  document.getElementById('sppr').textContent=d.p+' '+cu;
+  document.getElementById('sppr').style.color=up?'var(--grn)':'var(--red)';
+  document.getElementById('spch').innerHTML='<span class="'+(up?'up':'dn')+'">'+(up?'▲':'▼')+' '+Math.abs(d.ch)+' '+cu+' ('+Math.abs(d.cp)+'%)</span>';
+  var tv=sa?'TADAWUL:'+d.c:d.c;
+  document.getElementById('tv1').href='https://ar.tradingview.com/chart/?symbol='+tv+'&locale=ar';
+  document.getElementById('tv2').href=sa?'https://ar.tradingview.com/symbols/TADAWUL-'+d.c+'/':'https://ar.tradingview.com/symbols/'+d.c+'/';
+  var ms=[
+    {l:'RSI',v:d.rsi,p:parseFloat(d.rsi),c:parseFloat(d.rsi)>68?'var(--red)':parseFloat(d.rsi)<32?'var(--grn)':'#ffaa00'},
+    {l:'MACD',v:d.macd,p:50+parseFloat(d.macd)*15,c:parseFloat(d.macd)>0?'var(--grn)':'var(--red)'},
+    {l:'Stoch',v:d.stch,p:parseFloat(d.stch),c:parseFloat(d.stch)>75?'var(--red)':parseFloat(d.stch)<25?'var(--grn)':'#ffaa00'},
+    {l:'ATR%',v:d.atr+'%',p:parseFloat(d.atr)*15,c:'var(--blu)'},
+    {l:'قوة الإشارة',v:d.sc+'%',p:d.sc,c:d.sc>=70?'var(--grn)':d.sc>=55?'#ffaa00':'var(--red)'},
+    {l:'حجم ×',v:d.vm+'x',p:Math.min(parseFloat(d.vm)*18,100),c:parseFloat(d.vm)>=2?'var(--grn)':'var(--blu)'},
+  ];
+  document.getElementById('spm').innerHTML=ms.map(function(m){
+    return '<div class="mb"><div class="ml">'+m.l+'</div><div class="mv" style="color:'+m.c+'">'+m.v+'</div>'
+      +'<div class="mbar"><div class="mbf" style="width:'+Math.max(2,Math.min(100,m.p))+'%;background:'+m.c+'"></div></div></div>';
+  }).join('');
+  var nd=nc[d.c]||{};
+  var nh=d.news&&d.news.length?d.news.map(function(x){
+    var sc2=x.sentiment==='positive'?'nsp':x.sentiment==='negative'?'nsn':'nsu';
+    var sl2=x.sentiment==='positive'?'إيجابي':x.sentiment==='negative'?'سلبي':'محايد';
+    return '<div class="ni"><div class="nh">'+x.headline+'</div>'
+      +'<div class="nm"><span class="ns '+sc2+'">'+sl2+'</span><span>'+(x.source||'')+'</span><span>'+(x.time||'')+'</span></div></div>';
+  }).join(''):'<div style="font-size:10px;color:var(--mut)">لا أخبار</div>';
+  document.getElementById('spnl').innerHTML=nh;
+  document.getElementById('spai').innerHTML='<span class="spin"></span> جاري التحليل...';
+  fetchAI(d,nd,code);
+}
+
+function closeSP(){
+  document.getElementById('spn').classList.remove('on');
+  document.querySelectorAll('tbody tr').forEach(function(r){r.classList.remove('sl');});
+  selC=null;
+}
+
+function prog(pct,txt,done,active){
+  document.getElementById('pgf').style.width=pct+'%';
+  if(txt)document.getElementById('pgt').textContent=txt;
+  document.getElementById('pgp').textContent=pct+'%';
+  if(done){var e=document.getElementById(done);if(e){e.className='ps d';e.textContent='✅ '+e.textContent.slice(2);}}
+  if(active){var e2=document.getElementById(active);if(e2){e2.className='ps a';e2.innerHTML='<span class="spin"></span> '+e2.textContent.slice(2);}}
+  return slp(300);
+}
+
+function scan(){
+  var items=getList();
+  var strat=document.getElementById('strat').value;
+  var sa=document.getElementById('mkt').value==='SA';
+  var syms=items.map(function(x){return x.c;}).join(',');
+  var ep=sa?('/quotes?symbols='+syms):('/us_quotes?symbols='+syms);
+
+  document.getElementById('btn').disabled=true;
+  document.getElementById('tbl').innerHTML='';
+  document.getElementById('pgw').style.display='block';
+  document.getElementById('sb').classList.remove('on');
+  document.getElementById('cb').textContent='—';
+  closeSP(); nc={};
+
+  var steps=[
+    {id:'p1',l:'تحميل '+items.length+' سهم'},
+    {id:'p2',l:'جلب الأسعار الحقيقية'},
+    {id:'p3',l:'جلب الأخبار'},
+    {id:'p4',l:'ترتيب النتائج'},
+  ];
+  document.getElementById('pgs').innerHTML=steps.map(function(s){
+    return '<div class="ps" id="'+s.id+'">⏳ '+s.l+'</div>';
+  }).join('');
+
+  var stocks=[];
+
+  prog(8,'تحميل القائمة...',null,'p1')
+  .then(function(){return prog(15,'جلب الأسعار...',  'p1','p2');})
+  .then(function(){
+    return fetch(PROXY+ep).then(function(r){return r.json();});
+  })
+  .then(function(prices){
+    // بناء الأسهم من الأسعار
+    stocks=items.map(function(item){
+      var pd=prices[item.c];
+      // التحقق من البيانات — سهمك يرجع pd.price، Finnhub كذلك
+      if(!pd) return null;
+      if(pd.detail) return null; // خطأ من سهمك
+      if(pd.error) return null;  // خطأ عام
+      var p=parseFloat(pd.price);
+      if(!p||p<=0) return null;
+      var cp=parseFloat(pd.change_percent||pd.dp||0);
+      var ch=parseFloat(pd.change||pd.d||0);
+      var vol=parseInt(pd.volume||pd.v||0);
+      var ind=calcInd(cp,strat);
+      return{
+        c:item.c, n:item.n, s:item.s, m:item.m,
+        p:p.toFixed(2),
+        ch:Math.abs(ch).toFixed(2),
+        cp:cp.toFixed(2),
+        vol:vol,
+        rsi:ind.rsi, macd:ind.macd, mh:ind.mh,
+        stch:ind.stch, atr:ind.atr, vm:ind.vm,
+        sc:ind.sc, sig:ind.sig,
+        news:[], nst:'neutral'
+      };
+    }).filter(function(x){return x!==null;});
+
+    stocks.sort(function(a,b){return b.sc-a.sc;});
+    document.getElementById('pgt').textContent='✅ تم جلب '+stocks.length+' سعر حقيقي';
+    return prog(45,'جلب الأخبار...','p2','p3');
+  })
+  .then(function(){
+    if(!stocks.length) return;
+    var top=stocks.slice(0,24), bts=[];
+    for(var i=0;i<top.length;i+=8) bts.push(top.slice(i,i+8));
+    var ch=Promise.resolve();
+    bts.forEach(function(bt,bi){
+      ch=ch.then(function(){
+        return fetchNews(bt).then(function(nd){
+          if(nd&&nd.stocks){
+            Object.assign(nc,nd.stocks);
+            bt.forEach(function(x){
+              var si=nd.stocks[x.c];
+              if(si){
+                x.news=si.news||[];
+                x.nst=si.overall_sentiment||'neutral';
+                if(x.nst==='positive') x.sc=Math.min(97,x.sc+5);
+                else if(x.nst==='negative') x.sc=Math.max(10,x.sc-5);
+                x.sig=x.sc>=70?'buy':x.sc<=38?'sell':x.sc>=56?'watch':'neutral';
+              }
+            });
+          }
+          return prog(45+Math.round(((bi+1)/bts.length)*35),null,null,'p3');
+        });
+      });
+    });
+    return ch;
+  })
+  .then(function(){return prog(83,'ترتيب النتائج...','p3','p4');})
+  .then(function(){
+    stocks.sort(function(a,b){return b.sc-a.sc;});
+    all=stocks;
+    draw(all,cf);
+    var b=0,se=0,w=0,u=0,dn=0;
+    all.forEach(function(d){
+      if(d.sig==='buy')b++; else if(d.sig==='sell')se++; else if(d.sig==='watch')w++;
+      if(parseFloat(d.cp)>=0)u++; else dn++;
+    });
+    document.getElementById('s1').textContent=b;
+    document.getElementById('s2').textContent=se;
+    document.getElementById('s3').textContent=w;
+    document.getElementById('s5').textContent=u;
+    document.getElementById('s6').textContent=dn;
+    document.getElementById('sb').classList.add('on');
+    document.getElementById('cb').textContent=all.length+' سهم';
+    var t=new Date().toLocaleTimeString('ar-SA');
+    document.getElementById('st').textContent='فحص: '+t;
+    document.getElementById('st2').textContent='آخر تحديث: '+t;
+    return prog(100,'اكتمل ✓','p4',null);
+  })
+  .then(function(){return slp(300);})
+  .then(function(){
+    document.getElementById('pgw').style.display='none';
+    document.getElementById('btn').disabled=false;
+  })
+  .catch(function(e){
+    console.error('خطأ:',e);
+    if(stocks.length){all=stocks;draw(all,cf);}
+    document.getElementById('pgw').style.display='none';
+    document.getElementById('btn').disabled=false;
+  });
+}
+</script>
+</body>
+</html>

@@ -8,7 +8,6 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     return response
-
 SAHMK_KEY  = os.environ.get("SAHMK_API_KEY", "")
 SAHMK_BASE = "https://app.sahmk.sa/api/v1"
 CLAUDE_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
